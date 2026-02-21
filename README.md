@@ -27,6 +27,18 @@ Sistema de delivery desenvolvido com Spring Boot e Java 21.
 - GET /health - Status da aplicação (inclui versão Java)
 - GET /info - Informações da aplicação
 - GET /h2-console - Console do banco H2
+- POST /clientes
+- GET /clientes
+- GET /restaurantes
+- GET /produtos
+- POST /pedidos
+
+## Exemplo de Pedido
+{
+  "cliente": { "id": 1 },
+  "valorTotal": 59.90,
+  "status": "CRIADO"
+}
 
 ## 🔧 Configuração
 - Porta: 8080
