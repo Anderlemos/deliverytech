@@ -15,6 +15,19 @@ public class Cliente {
 
     private boolean ativo = true;
 
+    // ===== CONSTRUTORES =====
+
+    // Construtor vazio (OBRIGATÓRIO para o JPA)
+    public Cliente() {
+    }
+
+    // Construtor com nome e email
+    public Cliente(String nome, String email) {
+        this.nome = nome;
+        this.email = email;
+        this.ativo = true;
+    }
+
     // ===== GETTERS E SETTERS =====
 
     public Long getId() {
