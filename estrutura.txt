@@ -1,105 +1,20 @@
-.
-├── estrutura.txt
-├── HELP.md
-├── mvnw
-├── mvnw.cmd
+delivery-api
+│
+├── src
+│   ├── main
+│   │   ├── java
+│   │   │   └── com/deliverytech/delivery_api
+│   │   │       ├── controller
+│   │   │       ├── service
+│   │   │       ├── repository
+│   │   │       ├── entity
+│   │   │       ├── dto
+│   │   │       ├── exception
+│   │   │       └── DeliveryApiApplication.java
+│   │   └── resources
+│   │       └── application.properties
+│   └── test
+│
 ├── pom.xml
 ├── README.md
-├── src
-│   ├── main
-│   │   ├── java
-│   │   │   └── com
-│   │   │       └── deliverytech
-│   │   │           └── delivery_api
-│   │   │               ├── config
-│   │   │               │   └── H2Config.java
-│   │   │               ├── controller
-│   │   │               │   ├── ClienteController.java
-│   │   │               │   ├── HealthController.java
-│   │   │               │   ├── PedidoController.java
-│   │   │               │   ├── ProdutoController.java
-│   │   │               │   └── RestauranteController.java
-│   │   │               ├── DataLoader.java
-│   │   │               ├── DeliveryApiApplication.java
-│   │   │               ├── entity
-│   │   │               │   ├── Cliente.java
-│   │   │               │   ├── Pedido.java
-│   │   │               │   ├── Produto.java
-│   │   │               │   └── Restaurante.java
-│   │   │               ├── repository
-│   │   │               │   ├── ClienteRepository.java
-│   │   │               │   ├── PedidoRepository.java
-│   │   │               │   ├── ProdutoRepository.java
-│   │   │               │   └── RestauranteRepository.java
-│   │   │               └── service
-│   │   │                   ├── ClienteService.java
-│   │   │                   ├── PedidoService.java
-│   │   │                   ├── ProdutoService.java
-│   │   │                   └── RestauranteService.java
-│   │   └── resources
-│   │       ├── application.properties
-│   │       ├── static
-│   │       └── templates
-│   └── test
-│       └── java
-│           └── com
-│               └── deliverytech
-│                   └── delivery_api
-│                       └── DeliveryApiApplicationTests.java
-└── target
-    ├── classes
-    │   ├── application.properties
-    │   └── com
-    │       └── deliverytech
-    │           └── delivery_api
-    │               ├── config
-    │               │   └── H2Config.class
-    │               ├── controller
-    │               │   ├── ClienteController.class
-    │               │   ├── HealthController$AppInfo.class
-    │               │   ├── HealthController.class
-    │               │   ├── PedidoController.class
-    │               │   ├── ProdutoController.class
-    │               │   └── RestauranteController.class
-    │               ├── DataLoader.class
-    │               ├── DeliveryApiApplication.class
-    │               ├── entity
-    │               │   ├── Cliente.class
-    │               │   ├── Pedido.class
-    │               │   ├── Produto.class
-    │               │   └── Restaurante.class
-    │               ├── repository
-    │               │   ├── ClienteRepository.class
-    │               │   ├── PedidoRepository.class
-    │               │   ├── ProdutoRepository.class
-    │               │   └── RestauranteRepository.class
-    │               └── service
-    │                   ├── ClienteService.class
-    │                   ├── PedidoService.class
-    │                   ├── ProdutoService.class
-    │                   └── RestauranteService.class
-    ├── delivery-api-0.0.1-SNAPSHOT.jar
-    ├── delivery-api-0.0.1-SNAPSHOT.jar.original
-    ├── generated-sources
-    │   └── annotations
-    ├── generated-test-sources
-    │   └── test-annotations
-    ├── maven-archiver
-    │   └── pom.properties
-    ├── maven-status
-    │   └── maven-compiler-plugin
-    │       ├── compile
-    │       │   └── default-compile
-    │       │       ├── createdFiles.lst
-    │       │       └── inputFiles.lst
-    │       └── testCompile
-    │           └── default-testCompile
-    │               ├── createdFiles.lst
-    │               └── inputFiles.lst
-    └── test-classes
-        └── com
-            └── deliverytech
-                └── delivery_api
-                    └── DeliveryApiApplicationTests.class
-
-45 directories, 58 files
+└── estrutura.txt

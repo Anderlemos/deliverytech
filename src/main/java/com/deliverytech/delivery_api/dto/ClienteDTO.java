@@ -1,29 +1,13 @@
-package com.deliverytech.delivery_api.entity;
+package com.deliverytech.delivery_api.dto;
 
-import jakarta.persistence.*;
-
-@Entity
-public class Cliente {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class ClienteDTO {
 
     private String nome;
-
     private String email;
-
     private String telefone;
-
     private String endereco;
 
-    private boolean ativo = true;
-
-    // ===== GETTERS E SETTERS =====
-
-    public Long getId() {
-        return id;
-    }
+    // GETTERS E SETTERS
 
     public String getNome() {
         return nome;
@@ -33,7 +17,7 @@ public class Cliente {
         this.nome = nome;
     }
 
-    public String getEmail() {
+    public String getEmail() {   
         return email;
     }
 
@@ -55,13 +39,5 @@ public class Cliente {
 
     public void setEndereco(String endereco) {
         this.endereco = endereco;
-    }
-
-    public boolean isAtivo() {
-        return ativo;
-    }
-
-    public void setAtivo(boolean ativo) {
-        this.ativo = ativo;
     }
 }

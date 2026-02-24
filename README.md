@@ -1,106 +1,105 @@
 # deliverytech
 
-# Delivery Tech API
-Sistema de delivery desenvolvido com Spring Boot e Java 21.
-API REST desenvolvida com Spring Boot para gerenciamento de clientes em um sistema de delivery.
-Projeto criado para fins de estudo de arquitetura MVC, boas práticas de desenvolvimento backend e persistência com JPA.
+## Delivery Tech API
 
-## 🚀 Tecnologias
-- **Java 21 LTS** (versão mais recente)
-- Spring Boot 4.0.2
-- Spring Data JPA
-- H2 Database
-- Maven
-- REST API
-- Arquitetura MVC
+API REST desenvolvida com Spring Boot para gerenciamento de clientes.
 
-## 📂 Estrutura do Projeto
-src
-└── main
-├── java/com/deliverytech/delivery_api
-│ ├── controller
-│ ├── service
-│ ├── repository
-│ └── entity
-└── resources
+## Tecnologias Utilizadas
 
-## 🧱 Arquitetura
+Java 21
 
-O projeto segue o padrão arquitetural **MVC (Model-View-Controller)**:
+Spring Boot
 
-- **Entity (Model)** → Representação da entidade Cliente
-- **Repository** → Comunicação com o banco de dados
-- **Service** → Regras de negócio
-- **Controller** → Endpoints REST
+Spring Web
 
-## 🗄️ Banco de Dados
+Spring Data JPA
 
-O projeto utiliza o banco **H2 em memória**: 
-spring.datasource.url=jdbc:h2:mem:deliverydb
-Obs.: os dados são apagados ao encerrar a aplicação.
+H2 Database
 
-## ⚡ Recursos Modernos Utilizados
-- Records (Java 14+)
-- Text Blocks (Java 15+)
-- Pattern Matching (Java 17+)
-- Virtual Threads (Java 21)
+ModelMapper
 
-## 🏃‍♂️ Como executar
-1. **Pré-requisitos:** JDK 21 instalado
-2. Clone o repositório:
-git clone https://github.com/Anderlemos/deliverytech.git
-3.Acessar a pasta:
-Acessar a pasta
-4. Execute: `./mvnw spring-boot:run`
-5. Acesse: http://localhost:8080/health
+Maven
 
-## 📋 Endpoints
-- GET /health - Status da aplicação (inclui versão Java)
-- GET /info - Informações da aplicação
-- GET /h2-console - Console do banco H2
-- GET /Buscar cliente por ID
-http://localhost:8080/clientes/{id}
-- POST /clientes
-- POST /Criar cliente
-http://localhost:8080/clientes
-- GET /clientes
-- GET /restaurantes
-- GET /produtos
-- POST /pedidos
+## Estrutura do Projeto
+src/main/java/com/deliverytech/delivery_api
+ ├── controller
+ │    └── ClienteController.java
+ ├── service
+ │    └── ClienteService.java
+ ├── repository
+ │    └── ClienteRepository.java
+ ├── entity
+ │    └── Cliente.java
+ ├── dto
+ │    ├── ClienteDTO.java
+ │    └── ClienteResponseDTO.java
+ ├── exception
+ │    └── ResourceNotFoundException.java
+ └── DeliveryApiApplication.java
 
-## Exemplo de Criar cliente
+## Como executar o projeto
+./mvnw clean install
+./mvnw spring-boot:run
 
-Body JSON:
-''''json
+## Aplicação disponível em:
+
+http://localhost:8080
+
+## Endpoints disponíveis
+🔹 Criar Cliente
+
+POST
+
+/api/clientes
+
+Body:
+
 {
-  "nome": "Carlos",
-  "email": "carlos@email.com"
-} 
-'''
-
-## Deletar cliente
-DELETE
-http://localhost:8080/clientes/{id}
-
-## Exemplo de Pedido
-{
-  "cliente": { "id": 1 },
-  "valorTotal": 59.90,
-  "status": "CRIADO"
+  "nome": "Anderson",
+  "email": "anderson@email.com"
 }
+🔹 Listar Clientes Ativos
 
-## 🔧 Configuração
-- Porta: 8080
-- Banco: H2 em memória
-- Profile: development
+GET
 
-## Objetivo do Projeto
-- Praticar arquitetura em camadas.
-- Aplicar princípios do SOLID.
-- Trabalhar com JPA e persistência.
-- Criar API REST estruturada.
-- Versionamento com Git e GitHub.
+/api/clientes
+🔹 Buscar Cliente por ID
+
+GET
+
+/api/clientes/{id}
+🔹 Atualizar Cliente
+
+PUT
+
+/api/clientes/{id}
+🔹 Ativar/Desativar Cliente
+
+PATCH
+
+/api/clientes/{id}/status
+
+
+## Banco de Dados
+
+Banco em memória H2.
+
+Console disponível em:
+
+http://localhost:8080/h2-console
+
+JDBC URL:
+
+jdbc:h2:mem:deliverydb
+
+Usuário:
+
+sa
+
+Senha:
+
+(vazio)
 
 ## 👨‍💻 Desenvolvedor
-[Anderson Almeida de Lemos] - [Arquiterura de Sistema - Turma Noite]
+[Anderson Almeida de Lemos] - [Fundação FAT - Arquiterura de Sistema - Turma Noite]
 Desenvolvido com JDK 21 e Spring Boot 4.0.2

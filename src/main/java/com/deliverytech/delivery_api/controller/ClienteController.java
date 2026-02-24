@@ -1,36 +1,64 @@
 package com.deliverytech.delivery_api.controller;
 
-import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
-import com.deliverytech.delivery_api.entity.Cliente;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
+
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+
+import com.deliverytech.delivery_api.dto.ClienteDTO;
+import com.deliverytech.delivery_api.dto.ClienteResponseDTO;
 import com.deliverytech.delivery_api.service.ClienteService;
 
 @RestController
-@RequestMapping("/clientes")
+@RequestMapping("/api/clientes")
+@RequiredArgsConstructor
 public class ClienteController {
 
     private final ClienteService service;
 
-    public ClienteController(ClienteService service) {
-        this.service = service;
-    }
-
-    // Criar cliente
+    /**
+     * POST - Criar cliente
+     */
     @PostMapping
-    public Cliente salvar(@RequestBody Cliente cliente) {
-        return service.salvar(cliente);
+    @ResponseStatus(HttpStatus.CREATED)
+    public ClienteResponseDTO cadastrar(@Valid @RequestBody ClienteDTO dto) {
+        return service.cadastrarCliente(dto);
     }
 
-    // Listar clientes
+    /**
+     * GET - Buscar por ID
+     */
+    @GetMapping("/{id}")
+    public ClienteResponseDTO buscar(@PathVariable Long id) {
+        return service.buscarClientePorId(id);
+    }
+
+    /**
+     * GET - Listar ativos
+     */
     @GetMapping
-    public List<Cliente> listar() {
-        return service.listar();
+    public List<ClienteResponseDTO> listar() {
+        return service.listarClientesAtivos();
     }
 
-    // Inativar cliente
-    @PutMapping("/{id}/inativar")
-    public void inativar(@PathVariable Long id) {
-        service.inativar(id);
+    /**
+     * PUT - Atualizar cliente
+     */
+    @PutMapping("/{id}")
+    public ClienteResponseDTO atualizar(
+            @PathVariable Long id,
+            @Valid @RequestBody ClienteDTO dto) {
+        return service.atualizarCliente(id, dto);
+    }
+
+    /**
+     * PATCH - Ativar/Desativar
+     */
+    @PatchMapping("/{id}/status")
+    public void alterarStatus(@PathVariable Long id) {
+        service.ativarDesativarCliente(id);
     }
 }

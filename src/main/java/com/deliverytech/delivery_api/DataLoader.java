@@ -1,44 +1,52 @@
 package com.deliverytech.delivery_api;
 
-import com.deliverytech.delivery_api.entity.Cliente;
-import com.deliverytech.delivery_api.repository.ClienteRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
+import lombok.RequiredArgsConstructor;
+
+import com.deliverytech.delivery_api.entity.Cliente;
+import com.deliverytech.delivery_api.repository.ClienteRepository;
+
 @Component
+@RequiredArgsConstructor
 public class DataLoader implements CommandLineRunner {
 
-    private final ClienteRepository clienteRepository;
-
-    public DataLoader(ClienteRepository clienteRepository) {
-        this.clienteRepository = clienteRepository;
-    }
+    private final ClienteRepository repository;
 
     @Override
     public void run(String... args) {
 
-        System.out.println("Inserindo clientes...");
+        // Evita duplicar dados se já existirem registros
+        if (repository.count() > 0) {
+            return;
+        }
 
-        Cliente c1 = new Cliente("João Silva", "joao@email.com");
-        Cliente c2 = new Cliente("Maria Souza", "maria@email.com");
-        Cliente c3 = new Cliente("Carlos Lima", "carlos@email.com");
+        Cliente c1 = new Cliente();
+        c1.setNome("João");
+        c1.setEmail("joao@email.com");
+        c1.setTelefone("11999999999");
+        c1.setEndereco("Rua A");
+        c1.setAtivo(true);
 
-        clienteRepository.save(c1);
-        clienteRepository.save(c2);
-        clienteRepository.save(c3);
+        Cliente c2 = new Cliente();
+        c2.setNome("Maria");
+        c2.setEmail("maria@email.com");
+        c2.setTelefone("11988888888");
+        c2.setEndereco("Rua B");
+        c2.setAtivo(true);
 
-        System.out.println("Total de clientes: " + clienteRepository.count());
+        Cliente c3 = new Cliente();
+        c3.setNome("Carlos");
+        c3.setEmail("carlos@email.com");
+        c3.setTelefone("11977777777");
+        c3.setEndereco("Rua C");
+        c3.setAtivo(true);
 
-        System.out.println("Buscando por email...");
-        clienteRepository.findByEmail("joao@email.com")
-                .ifPresent(cliente ->
-                        System.out.println("Encontrado: " + cliente.getNome())
-                );
+        repository.save(c1);
+        repository.save(c2);
+        repository.save(c3);
 
-        System.out.println("Clientes ativos:");
-        clienteRepository.findByAtivoTrue()
-                .forEach(cliente ->
-                        System.out.println(cliente.getNome())
-                );
+        System.out.println("Clientes iniciais carregados com sucesso!");
     }
 }
