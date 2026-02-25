@@ -1,20 +1,62 @@
-delivery-api
-│
-├── src
-│   ├── main
-│   │   ├── java
-│   │   │   └── com/deliverytech/delivery_api
-│   │   │       ├── controller
-│   │   │       ├── service
-│   │   │       ├── repository
-│   │   │       ├── entity
-│   │   │       ├── dto
-│   │   │       ├── exception
-│   │   │       └── DeliveryApiApplication.java
-│   │   └── resources
-│   │       └── application.properties
-│   └── test
-│
+.
+├── estrutura.txt
+├── HELP.md
+├── mvnw
+├── mvnw.cmd
 ├── pom.xml
 ├── README.md
-└── estrutura.txt
+└── src
+    ├── main
+    │   ├── java
+    │   │   └── com
+    │   │       └── deliverytech
+    │   │           └── delivery_api
+    │   │               ├── config
+    │   │               │   ├── H2Config.java
+    │   │               │   └── ModelMapperConfig.java
+    │   │               ├── controller
+    │   │               │   ├── ClienteController.java
+    │   │               │   ├── HealthController.java
+    │   │               │   ├── PedidoController.java
+    │   │               │   ├── ProdutoController.java
+    │   │               │   └── RestauranteController.java
+    │   │               ├── DataLoader.java
+    │   │               ├── DeliveryApiApplication.java
+    │   │               ├── dto
+    │   │               │   ├── ClienteDTO.java
+    │   │               │   └── ClienteResponseDTO.java
+    │   │               ├── entity
+    │   │               │   ├── Cliente.java
+    │   │               │   ├── Pedido.java
+    │   │               │   ├── Produto.java
+    │   │               │   └── Restaurante.java
+    │   │               ├── exception
+    │   │               │   ├── EmailJaCadastradoException.java
+    │   │               │   ├── GlobalExceptionHandler.java
+    │   │               │   └── ResourceNotFoundException.java
+    │   │               ├── repository
+    │   │               │   ├── ClienteRepository.java
+    │   │               │   ├── PedidoRepository.java
+    │   │               │   ├── ProdutoRepository.java
+    │   │               │   └── RestauranteRepository.java
+    │   │               └── service
+    │   │                   ├── ClienteService.java
+    │   │                   ├── PedidoService.java
+    │   │                   ├── ProdutoService.java
+    │   │                   └── RestauranteService.java
+    │   └── resources
+    │       ├── application.properties
+    │       ├── static
+    │       └── templates
+    └── test
+        └── java
+            └── com
+                └── deliverytech
+                    └── delivery_api
+                        ├── controller
+                        │   └── ClienteControllerTest.java
+                        ├── DeliveryApiApplicationTests.java
+                        └── service
+                            └── ClienteServiceTest.java
+
+24 directories, 36 files

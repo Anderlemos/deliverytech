@@ -14,6 +14,7 @@ import com.deliverytech.delivery_api.dto.ClienteResponseDTO;
 import com.deliverytech.delivery_api.entity.Cliente;
 import com.deliverytech.delivery_api.exception.EmailJaCadastradoException;
 import com.deliverytech.delivery_api.repository.ClienteRepository;
+import com.deliverytech.delivery_api.exception.ResourceNotFoundException;
 
 @Service
 @RequiredArgsConstructor
@@ -52,7 +53,7 @@ public class ClienteService {
     public ClienteResponseDTO buscarClientePorId(Long id) {
 
         Cliente cliente = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Cliente não encontrado"));
 
         return modelMapper.map(cliente, ClienteResponseDTO.class);
     }
@@ -76,7 +77,7 @@ public class ClienteService {
     public void ativarDesativarCliente(Long id) {
 
         Cliente cliente = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Cliente não encontrado"));
 
         cliente.setAtivo(!cliente.isAtivo());
 
@@ -86,7 +87,7 @@ public class ClienteService {
     public ClienteResponseDTO atualizarCliente(Long id, ClienteDTO dto) {
 
         Cliente cliente = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Cliente não encontrado"));
 
         cliente.setNome(dto.getNome());
         cliente.setEmail(dto.getEmail());

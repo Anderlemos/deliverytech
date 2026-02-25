@@ -1,105 +1,54 @@
 # deliverytech
 
-## Delivery Tech API
+# Delivery Tech API
 
-API REST desenvolvida com Spring Boot para gerenciamento de clientes.
+API REST desenvolvida com Spring Boot para gerenciamento de clientes do sistema Delivery Tech.
 
-## Tecnologias Utilizadas
+## Tecnologias
 
-Java 21
+- Java 21
+- Spring Boot 3
+- Spring Data JPA
+- H2 Database
+- ModelMapper
+- JUnit 5
+- Mockito
+- Maven
 
-Spring Boot
+## Funcionalidades
 
-Spring Web
+- Cadastrar cliente
+- Buscar cliente por ID
+- Listar clientes ativos
+- Atualizar cliente
+- Ativar/Desativar cliente
+- Validação de email único
+- Tratamento global de exceções
+- Testes automatizados
 
-Spring Data JPA
+## Testes
 
-H2 Database
+O projeto possui testes unitários e testes de controller.
 
-ModelMapper
+Para rodar:
 
-Maven
+./mvnw test
 
-## Estrutura do Projeto
-src/main/java/com/deliverytech/delivery_api
- ├── controller
- │    └── ClienteController.java
- ├── service
- │    └── ClienteService.java
- ├── repository
- │    └── ClienteRepository.java
- ├── entity
- │    └── Cliente.java
- ├── dto
- │    ├── ClienteDTO.java
- │    └── ClienteResponseDTO.java
- ├── exception
- │    └── ResourceNotFoundException.java
- └── DeliveryApiApplication.java
+## Executar o projeto
 
-## Como executar o projeto
-./mvnw clean install
 ./mvnw spring-boot:run
 
-## Aplicação disponível em:
-
+API disponível em:
 http://localhost:8080
 
-## Endpoints disponíveis
-🔹 Criar Cliente
-
-POST
-
-/api/clientes
-
-Body:
-
-{
-  "nome": "Anderson",
-  "email": "anderson@email.com"
-}
-🔹 Listar Clientes Ativos
-
-GET
-
-/api/clientes
-🔹 Buscar Cliente por ID
-
-GET
-
-/api/clientes/{id}
-🔹 Atualizar Cliente
-
-PUT
-
-/api/clientes/{id}
-🔹 Ativar/Desativar Cliente
-
-PATCH
-
-/api/clientes/{id}/status
-
-
-## Banco de Dados
-
-Banco em memória H2.
-
-Console disponível em:
-
+Console H2:
 http://localhost:8080/h2-console
 
-JDBC URL:
 
-jdbc:h2:mem:deliverydb
+## Estrutura do Projeto
 
-Usuário:
+Ver arquivo `estrutura.txt`
 
-sa
-
-Senha:
-
-(vazio)
-
-## 👨‍💻 Desenvolvedor
+## Desenvolvedor
 [Anderson Almeida de Lemos] - [Fundação FAT - Arquiterura de Sistema - Turma Noite]
 Desenvolvido com JDK 21 e Spring Boot 4.0.2
