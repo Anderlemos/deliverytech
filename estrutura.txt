@@ -11,9 +11,13 @@
     │   │   └── com
     │   │       └── deliverytech
     │   │           └── delivery_api
+    │   │               ├── api
+    │   │               │   ├── ApiResponse.java
+    │   │               │   └── ErrorResponse.java
     │   │               ├── config
     │   │               │   ├── H2Config.java
-    │   │               │   └── ModelMapperConfig.java
+    │   │               │   ├── ModelMapperConfig.java
+    │   │               │   └── OpenApiConfig.java
     │   │               ├── controller
     │   │               │   ├── ClienteController.java
     │   │               │   ├── HealthController.java
@@ -59,4 +63,4 @@
                         └── service
                             └── ClienteServiceTest.java
 
-24 directories, 36 files
+25 directories, 39 files

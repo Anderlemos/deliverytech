@@ -1,9 +1,8 @@
 package com.deliverytech.delivery_api.service;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,8 +12,8 @@ import com.deliverytech.delivery_api.dto.ClienteDTO;
 import com.deliverytech.delivery_api.dto.ClienteResponseDTO;
 import com.deliverytech.delivery_api.entity.Cliente;
 import com.deliverytech.delivery_api.exception.EmailJaCadastradoException;
-import com.deliverytech.delivery_api.repository.ClienteRepository;
 import com.deliverytech.delivery_api.exception.ResourceNotFoundException;
+import com.deliverytech.delivery_api.repository.ClienteRepository;
 
 @Service
 @RequiredArgsConstructor
@@ -29,21 +28,15 @@ public class ClienteService {
     @Transactional
     public ClienteResponseDTO cadastrarCliente(ClienteDTO dto) {
 
-        // Regra de negócio: email não pode ser duplicado
-        if (repository.findAll()
-                .stream()
-                .anyMatch(c -> c.getEmail().equals(dto.getEmail()))) {
+        if (repository.existsByEmail(dto.getEmail())) {
             throw new EmailJaCadastradoException("Email já cadastrado");
         }
 
-        // Converter DTO para entidade
         Cliente cliente = modelMapper.map(dto, Cliente.class);
-
         cliente.setAtivo(true);
 
         repository.save(cliente);
 
-        // Retornar DTO de resposta
         return modelMapper.map(cliente, ClienteResponseDTO.class);
     }
 
@@ -59,15 +52,12 @@ public class ClienteService {
     }
 
     /**
-     * Listar apenas clientes ativos
+     * Listar clientes ativos com paginação
      */
-    public List<ClienteResponseDTO> listarClientesAtivos() {
+    public Page<ClienteResponseDTO> listarClientesAtivos(Pageable pageable) {
 
-        return repository.findAll()
-                .stream()
-                .filter(Cliente::isAtivo)
-                .map(c -> modelMapper.map(c, ClienteResponseDTO.class))
-                .collect(Collectors.toList());
+        return repository.findByAtivoTrue(pageable)
+                .map(cliente -> modelMapper.map(cliente, ClienteResponseDTO.class));
     }
 
     /**
@@ -84,10 +74,20 @@ public class ClienteService {
         repository.save(cliente);
     }
 
+    /**
+     * Atualizar cliente
+     */
+    @Transactional
     public ClienteResponseDTO atualizarCliente(Long id, ClienteDTO dto) {
 
         Cliente cliente = repository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Cliente não encontrado"));
+
+        // Validação de email duplicado (caso esteja alterando)
+        if (!cliente.getEmail().equals(dto.getEmail())
+                && repository.existsByEmail(dto.getEmail())) {
+            throw new EmailJaCadastradoException("Email já cadastrado");
+        }
 
         cliente.setNome(dto.getNome());
         cliente.setEmail(dto.getEmail());
@@ -96,6 +96,6 @@ public class ClienteService {
 
         repository.save(cliente);
 
-        return new ClienteResponseDTO(cliente);
+        return modelMapper.map(cliente, ClienteResponseDTO.class);
     }
 }

@@ -1,13 +1,14 @@
 package com.deliverytech.delivery_api.repository;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import java.util.Optional;
-import java.util.List;
 import com.deliverytech.delivery_api.entity.Cliente;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ClienteRepository extends JpaRepository<Cliente, Long> {
 
-    Optional<Cliente> findByEmail(String email);
+    Page<Cliente> findByAtivoTrue(Pageable pageable);
 
-    List<Cliente> findByAtivoTrue();
+    boolean existsByEmail(String email);
+
 }

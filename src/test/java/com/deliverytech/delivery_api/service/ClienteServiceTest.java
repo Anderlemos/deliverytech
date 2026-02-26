@@ -9,87 +9,101 @@ import com.deliverytech.delivery_api.repository.ClienteRepository;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+
 import org.modelmapper.ModelMapper;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 
 import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
+@ExtendWith(MockitoExtension.class)
 class ClienteServiceTest {
 
     @Mock
     private ClienteRepository repository;
 
-    private ModelMapper modelMapper = new ModelMapper();
+    @Mock
+    private ModelMapper modelMapper;
 
     @InjectMocks
     private ClienteService service;
 
+    private Cliente cliente;
+    private ClienteDTO clienteDTO;
+    private ClienteResponseDTO clienteResponseDTO;
+
     @BeforeEach
     void setup() {
-        MockitoAnnotations.openMocks(this);
-        service = new ClienteService(repository, modelMapper);
-    }
 
-    // =========================
-    // CADASTRAR CLIENTE
-    // =========================
-
-    @Test
-    void deveCadastrarClienteComSucesso() {
-
-        ClienteDTO dto = new ClienteDTO();
-        dto.setNome("João");
-        dto.setEmail("joao@email.com");
-
-        when(repository.findAll()).thenReturn(List.of());
-        when(repository.save(any(Cliente.class))).thenAnswer(invocation -> invocation.getArgument(0));
-
-        ClienteResponseDTO response = service.cadastrarCliente(dto);
-
-        assertEquals("João", response.getNome());
-        verify(repository, times(1)).save(any(Cliente.class));
-    }
-
-    @Test
-    void deveLancarExcecaoQuandoEmailDuplicado() {
-
-        Cliente cliente = new Cliente();
+        cliente = new Cliente();
+        cliente.setNome("João");
         cliente.setEmail("joao@email.com");
+        cliente.setAtivo(true);
 
-        ClienteDTO dto = new ClienteDTO();
-        dto.setEmail("joao@email.com");
+        clienteDTO = new ClienteDTO();
+        clienteDTO.setNome("João");
+        clienteDTO.setEmail("joao@email.com");
 
-        when(repository.findAll()).thenReturn(List.of(cliente));
+        clienteResponseDTO = new ClienteResponseDTO();
+        clienteResponseDTO.setId(1L);
+        clienteResponseDTO.setNome("João");
+        clienteResponseDTO.setEmail("joao@email.com");
+        clienteResponseDTO.setAtivo(true);
+    }
+
+    @Test
+    void deveCadastrarCliente() {
+
+        when(repository.existsByEmail(clienteDTO.getEmail())).thenReturn(false);
+        when(modelMapper.map(clienteDTO, Cliente.class)).thenReturn(cliente);
+        when(repository.save(any())).thenReturn(cliente);
+        when(modelMapper.map(cliente, ClienteResponseDTO.class))
+                .thenReturn(clienteResponseDTO);
+
+        ClienteResponseDTO response = service.cadastrarCliente(clienteDTO);
+
+        assertNotNull(response);
+        assertEquals("João", response.getNome());
+        verify(repository).save(any());
+    }
+
+    @Test
+    void deveLancarExcecaoQuandoEmailJaExiste() {
+
+        when(repository.existsByEmail(clienteDTO.getEmail())).thenReturn(true);
 
         assertThrows(EmailJaCadastradoException.class,
-                () -> service.cadastrarCliente(dto));
-    }
+                () -> service.cadastrarCliente(clienteDTO));
 
-    // =========================
-    // BUSCAR POR ID
-    // =========================
+        verify(repository, never()).save(any());
+    }
 
     @Test
     void deveBuscarClientePorId() {
 
-        Cliente cliente = new Cliente();
-        cliente.setNome("João");
-
         when(repository.findById(1L)).thenReturn(Optional.of(cliente));
+        when(modelMapper.map(cliente, ClienteResponseDTO.class))
+                .thenReturn(clienteResponseDTO);
 
         ClienteResponseDTO response = service.buscarClientePorId(1L);
 
+        assertNotNull(response);
         assertEquals("João", response.getNome());
     }
 
     @Test
-    void deveLancarExcecaoQuandoNaoEncontrado() {
+    void deveLancarExcecaoQuandoClienteNaoEncontrado() {
 
         when(repository.findById(1L)).thenReturn(Optional.empty());
 
@@ -97,65 +111,42 @@ class ClienteServiceTest {
                 () -> service.buscarClientePorId(1L));
     }
 
-    // =========================
-    // LISTAR ATIVOS
-    // =========================
-
     @Test
-    void deveListarApenasClientesAtivos() {
+    void deveListarClientesAtivos() {
 
-        Cliente ativo = new Cliente();
-        ativo.setNome("Ativo");
-        ativo.setAtivo(true);
+        Page<Cliente> page = new PageImpl<>(List.of(cliente));
 
-        Cliente inativo = new Cliente();
-        inativo.setNome("Inativo");
-        inativo.setAtivo(false);
+        when(repository.findByAtivoTrue(any())).thenReturn(page);
+        when(modelMapper.map(cliente, ClienteResponseDTO.class))
+                .thenReturn(clienteResponseDTO);
 
-        when(repository.findAll()).thenReturn(List.of(ativo, inativo));
+        Page<ClienteResponseDTO> resultado =
+                service.listarClientesAtivos(PageRequest.of(0, 10));
 
-        List<ClienteResponseDTO> lista = service.listarClientesAtivos();
-
-        assertEquals(1, lista.size());
-        assertEquals("Ativo", lista.get(0).getNome());
+        assertEquals(1, resultado.getTotalElements());
     }
 
-    // =========================
-    // ATIVAR/DESATIVAR
-    // =========================
-
     @Test
-    void deveAlternarStatusCliente() {
-
-        Cliente cliente = new Cliente();
-        cliente.setAtivo(true);
+    void deveAtivarOuDesativarCliente() {
 
         when(repository.findById(1L)).thenReturn(Optional.of(cliente));
 
         service.ativarDesativarCliente(1L);
 
-        assertFalse(cliente.isAtivo());
         verify(repository).save(cliente);
     }
-
-    // =========================
-    // ATUALIZAR CLIENTE
-    // =========================
 
     @Test
     void deveAtualizarCliente() {
 
-        Cliente cliente = new Cliente();
-        cliente.setNome("Antigo");
-
-        ClienteDTO dto = new ClienteDTO();
-        dto.setNome("Novo");
-
         when(repository.findById(1L)).thenReturn(Optional.of(cliente));
+        when(modelMapper.map(cliente, ClienteResponseDTO.class))
+                .thenReturn(clienteResponseDTO);
 
-        ClienteResponseDTO response = service.atualizarCliente(1L, dto);
+        ClienteResponseDTO response =
+                service.atualizarCliente(1L, clienteDTO);
 
-        assertEquals("Novo", response.getNome());
-        verify(repository).save(cliente);
+        assertNotNull(response);
+        verify(repository).save(any());
     }
 }

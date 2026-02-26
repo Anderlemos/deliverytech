@@ -1,34 +1,53 @@
 package com.deliverytech.delivery_api.exception;
 
+import com.deliverytech.delivery_api.api.ErrorResponse;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.Map;
-
+/**
+ * Classe responsável por tratar exceções globais da aplicação.
+ * Toda exception lançada nos controllers/services será interceptada aqui.
+ */
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    // Email já cadastrado
+    /**
+     * Email já cadastrado (409)
+     */
     @ExceptionHandler(EmailJaCadastradoException.class)
-    public ResponseEntity<Object> handleEmailDuplicado(EmailJaCadastradoException ex) {
+    public ResponseEntity<ErrorResponse> handleEmailDuplicado(EmailJaCadastradoException ex) {
 
-        return buildResponse(HttpStatus.CONFLICT, ex.getMessage());
+        ErrorResponse error = new ErrorResponse(
+                "EMAIL_ALREADY_EXISTS",
+                ex.getMessage()
+        );
+
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(error);
     }
 
-    // Recurso não encontrado
+    /**
+     * Recurso não encontrado (404)
+     */
     @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<Object> handleNotFound(ResourceNotFoundException ex) {
+    public ResponseEntity<ErrorResponse> handleNotFound(ResourceNotFoundException ex) {
 
-        return buildResponse(HttpStatus.NOT_FOUND, ex.getMessage());
+        ErrorResponse error = new ErrorResponse(
+                "RESOURCE_NOT_FOUND",
+                ex.getMessage()
+        );
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
     }
 
-    // Erro de validação (@Valid)
+    /**
+     * Erro de validação (@Valid) - 400
+     */
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<Object> handleValidation(MethodArgumentNotValidException ex) {
+    public ResponseEntity<ErrorResponse> handleValidation(MethodArgumentNotValidException ex) {
 
         String mensagem = ex.getBindingResult()
                 .getFieldErrors()
@@ -37,25 +56,25 @@ public class GlobalExceptionHandler {
                 .findFirst()
                 .orElse("Erro de validação");
 
-        return buildResponse(HttpStatus.BAD_REQUEST, mensagem);
+        ErrorResponse error = new ErrorResponse(
+                "VALIDATION_ERROR",
+                mensagem
+        );
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
 
-    // 🔴 Erro genérico
+    /**
+     * Erro genérico inesperado (500)
+     */
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<Object> handleGeneric(Exception ex) {
+    public ResponseEntity<ErrorResponse> handleGeneric(Exception ex) {
 
-        return buildResponse(HttpStatus.INTERNAL_SERVER_ERROR, "Erro interno no servidor");
-    }
+        ErrorResponse error = new ErrorResponse(
+                "INTERNAL_SERVER_ERROR",
+                "Erro interno no servidor"
+        );
 
-    // 🔧 Método auxiliar para padronizar resposta
-    private ResponseEntity<Object> buildResponse(HttpStatus status, String message) {
-
-        Map<String, Object> body = new HashMap<>();
-        body.put("timestamp", LocalDateTime.now());
-        body.put("status", status.value());
-        body.put("error", status.getReasonPhrase());
-        body.put("message", message);
-
-        return new ResponseEntity<>(body, status);
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
     }
 }
