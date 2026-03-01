@@ -23,8 +23,10 @@ import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 
-@WebMvcTest(controllers = ClienteController.class)
+@WebMvcTest(ClienteController.class)
+@AutoConfigureMockMvc(addFilters = false)
 class ClienteControllerTest {
 
     @Autowired

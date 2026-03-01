@@ -17,7 +17,8 @@
     │   │               ├── config
     │   │               │   ├── H2Config.java
     │   │               │   ├── ModelMapperConfig.java
-    │   │               │   └── OpenApiConfig.java
+    │   │               │   ├── OpenApiConfig.java
+    │   │               │   └── SecurityConfig.java
     │   │               ├── controller
     │   │               │   ├── ClienteController.java
     │   │               │   ├── HealthController.java
@@ -38,11 +39,14 @@
     │   │               │   ├── EmailJaCadastradoException.java
     │   │               │   ├── GlobalExceptionHandler.java
     │   │               │   └── ResourceNotFoundException.java
+    │   │               ├── model
+    │   │               │   └── Usuario.java
     │   │               ├── repository
     │   │               │   ├── ClienteRepository.java
     │   │               │   ├── PedidoRepository.java
     │   │               │   ├── ProdutoRepository.java
-    │   │               │   └── RestauranteRepository.java
+    │   │               │   ├── RestauranteRepository.java
+    │   │               │   └── UsuarioRepository.java
     │   │               └── service
     │   │                   ├── ClienteService.java
     │   │                   ├── PedidoService.java
@@ -63,4 +67,4 @@
                         └── service
                             └── ClienteServiceTest.java
 
-25 directories, 39 files
+26 directories, 42 files
