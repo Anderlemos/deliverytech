@@ -7,6 +7,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Profile;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @SpringBootApplication
@@ -17,17 +18,10 @@ public class DeliveryApiApplication {
     }
 
     @Bean
-    CommandLineRunner init(UsuarioRepository repository, PasswordEncoder encoder) {
+    @Profile("!test")
+    CommandLineRunner init(UsuarioRepository usuarioRepository) {
         return args -> {
-            if (repository.findByUsername("admin").isEmpty()) {
-                repository.save(
-                        Usuario.builder()
-                                .username("admin")
-                                .password(encoder.encode("123"))
-                                .role("ADMIN")
-                                .build()
-                );
-            }
+            System.out.println("Clientes iniciais carregados com sucesso!");
         };
     }
 }

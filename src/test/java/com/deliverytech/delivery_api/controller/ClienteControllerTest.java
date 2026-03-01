@@ -3,19 +3,23 @@ package com.deliverytech.delivery_api.controller;
 import com.deliverytech.delivery_api.dto.ClienteDTO;
 import com.deliverytech.delivery_api.dto.ClienteResponseDTO;
 import com.deliverytech.delivery_api.service.ClienteService;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
+import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
+import org.springframework.boot.autoconfigure.security.servlet.SecurityFilterAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.mock.mockito.MockBean;
-
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
-
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.util.List;
 
@@ -23,10 +27,10 @@ import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 
 @WebMvcTest(ClienteController.class)
 @AutoConfigureMockMvc(addFilters = false)
+@ActiveProfiles("test")
 class ClienteControllerTest {
 
     @Autowired
@@ -69,7 +73,7 @@ class ClienteControllerTest {
     }
 
     // =========================
-    // LISTAR CLIENTES
+    // LISTAR CLIENTES ATIVOS
     // =========================
     @Test
     void deveListarClientesAtivos() throws Exception {
@@ -98,7 +102,7 @@ class ClienteControllerTest {
     }
 
     // =========================
-    // ATUALIZAR
+    // ATUALIZAR CLIENTE
     // =========================
     @Test
     void deveAtualizarCliente() throws Exception {
