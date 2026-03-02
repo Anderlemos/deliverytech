@@ -155,5 +155,5 @@ Relacionamento Cliente → Pedido
 
 # Desenvolvedor
 
-[Anderson Almeida de Lemos] - [Fundação FAT - Arquiterura de Sistema - Turma Noite]
-Desenvolvido com JDK 21 e Spring Boot 3.2.5
+[Anderson Almeida de Lemos] - [Escola Técnica FAT - Arquiterura de Sistema - Turma Noite]
+Desenvolvido com JDK 21 e Spring Boot 3.2.5 .
