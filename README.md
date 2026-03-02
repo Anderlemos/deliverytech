@@ -1,70 +1,97 @@
-# deliverytech
-
 # Delivery Tech API
 
-API REST desenvolvida com Spring Boot para gerenciamento de clientes e pedidos.
-
----
+API REST desenvolvida com Spring Boot para gerenciamento de clientes e pedidos, implementando autenticação JWT stateless, paginação e boas práticas de arquitetura.
 
 ## Tecnologias Utilizadas
 
 - Java 17+
+
 - Spring Boot
+
 - Spring Web
+
 - Spring Data JPA
-- Spring Security (JWT)
+
+- Spring Security
+
+- JWT (JSON Web Token)
+
 - H2 Database
+
 - Swagger / OpenAPI
+
 - Maven
+
 - JUnit 5
+
 - Mockito
 
----
+## Arquitetura
 
-## Estrutura do Projeto
+O projeto segue separação em camadas:
 
-
-delivery-api/
+delivery-api
 │
 ├── src/main/java/com/deliverytech/delivery_api
-│ ├── controller
-│ ├── service
-│ ├── repository
-│ ├── model
-│ ├── dto
-│ ├── config
-│ └── exception
+│   ├── controller
+│   ├── service
+│   ├── repository
+│   ├── model
+│   ├── dto
+│   ├── config
+│   ├── security
+│   └── exception
 │
 ├── src/test
+│
 ├── pom.xml
 └── README.md
 
-
----
-
 ## Segurança
 
-A API utiliza autenticação via JWT.
+A API utiliza autenticação JWT stateless.
 
-### Login
+- Login gera token
 
-POST `/auth/login`
+- Token deve ser enviado no header
 
-```json
+- Endpoints protegidos exigem autenticação
+
+- Filtro JWT valida requisições
+
+## Autenticação
+Login
+
+POST /auth/login
+
+Request:
+
 {
   "username": "admin",
   "password": "123"
 }
 
-Retorna:
+Response:
 
 {
-  "token": "..."
+  "token": "seu_token_aqui"
 }
 
-Use o token no Swagger clicando em Authorize.
 
-## Swagger
+## Usando o Token
+
+Enviar no header:
+
+Authorization: Bearer seu_token_aqui
+
+No Swagger:
+
+1. Clique em Authorize
+
+2. Cole: Bearer seu_token_aqui
+
+
+## Documentação Swagger
 
 Acesse:
 
@@ -74,30 +101,59 @@ ou
 
 http://localhost:8080/swagger-ui/index.html
 
+
 ## Como Executar
+
 ./mvnw spring-boot:run
 
+Ou:
+
+mvn spring-boot:run
+
+
 ## Rodar Testes
+
 ./mvnw test
 
 ## Funcionalidades
 
-Cadastro de Cliente
+### Cliente
 
-Atualização de Cliente
+- Cadastro de cliente
 
-Ativar/Desativar Cliente
+- Atualização de cliente
 
-Listagem de Clientes
+- Ativar / Desativar cliente
 
-Criação de Pedido
+- Listagem paginada de clientes
+
+### Pedido
+
+Criação de pedido
 
 Relacionamento Cliente → Pedido
 
-Segurança com JWT
+### Segurança
 
-Testes unitários e de controller
+- Autenticação JWT
 
-## Desenvolvedor
+- Proteção de endpoints
+
+- Filtro customizado
+
+- Configuração stateless
+
+### Testes
+
+- Testes unitários (Service)
+
+- Testes de Controller com MockMvc
+
+- Uso de Mockito
+
+- Uso de @MockBean## 
+
+# Desenvolvedor
+
 [Anderson Almeida de Lemos] - [Fundação FAT - Arquiterura de Sistema - Turma Noite]
-Desenvolvido com JDK 21 e Spring Boot 4.0.2
+Desenvolvido com JDK 21 e Spring Boot 3.2.5
